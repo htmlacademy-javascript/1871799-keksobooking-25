@@ -43,19 +43,31 @@ function getAuthorsArray() {
       avatar : `img/avatars/user${  randomUserNumber  }.png`,
     };
   }
+  return authors;
 }
 getAuthorsArray();
+
+const LAT_NUMBER_MIN = 35.65000;
+const LAT_NUMBER_MAX = 35.70000;
+const LNG_NUMBER_MIN = 139.70000;
+const LNG_NUMBER_MAX = 139.80000;
+const NUMBER_OF_DECIMALS = 5;
 
 function getLocationArray() {
   const locations = [];
   for (let i=0; i<= SIMILAR_OBJECT_COUNT - 1; i++) {
     const location = {
-      lat: getRandomFloat(35.65000, 35.70000, 5),
-      lng: getRandomFloat(139.70000, 139.80000, 5),
+      lat: getRandomFloat(LAT_NUMBER_MIN, LAT_NUMBER_MAX, NUMBER_OF_DECIMALS),
+      lng: getRandomFloat(LNG_NUMBER_MIN, LNG_NUMBER_MAX, NUMBER_OF_DECIMALS),
     };
     locations.push(location);
   }
   return locations;
+}
+
+function getAddressElement() {
+  const randomElement = getRandomArrayElement(getLocationArray());
+  return ((randomElement.lat).toString()).concat(', ', ((randomElement.lng).toString()));
 }
 
 const CHECKINS = [
@@ -101,7 +113,7 @@ const MAX_GUESTS = 10;
 
 const offer = () => ({
   title: 'Наше предложение по аренде Вам понравится',
-  address: getRandomArrayElement(getLocationArray()),
+  address: getAddressElement(),
   price: getRandomInteger(0, MAX_PRICE),
   type: getRandomArrayElement(TYPES),
   rooms: getRandomInteger(1, MAX_ROOMS),
@@ -113,4 +125,5 @@ const offer = () => ({
   photos: getRandomArray(PHOTOS_ARRAY, getRandomInteger (1, PHOTOS_ARRAY.length)),
 });
 
-const similarOffers = Array.from({length: SIMILAR_OBJECT_COUNT}, offer);
+const getArrayOffers = () => Array.from({length: SIMILAR_OBJECT_COUNT}, offer);
+getArrayOffers();
