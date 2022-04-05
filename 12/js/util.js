@@ -1,3 +1,4 @@
+const RERENDER_DELAY = 500;
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
@@ -36,6 +37,26 @@ const removeClass = (element, classToRemove) => {
   return classRemove;
 };
 
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
+const addPhoto = (Input, elementPhoto) => {
+  const file = Input.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    elementPhoto.src = URL.createObjectURL(file);
+  }
+};
+
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArray, addClass, removeClass, isEscapeKey};
+export {getRandomInteger, getRandomFloat, getRandomArrayElement, getRandomArray, addClass, removeClass, isEscapeKey, debounce, addPhoto};
